@@ -1,14 +1,13 @@
 package com.sprypoint.gridreader;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+public class StandardConsumptionMessage extends ERTMessage implements
+		java.io.Serializable {
 
-public class StandardConsumptionMessage extends ERTMessage implements java.io.Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3676906591718914802L;
 
 	public StandardConsumptionMessage() {
@@ -26,24 +25,29 @@ public class StandardConsumptionMessage extends ERTMessage implements java.io.Se
 			setSignalStrength(Short.parseShort(parts[5]));
 		}
 	}
-	
+
 	public void log() {
 		Connection conn = null;
 		try {
 			Calendar cal = new GregorianCalendar();
-			
+
 			conn = GridReader.connect();
-			
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO scm(meter, readtime, kwhreading) VALUES (?, ?, ?)");
+
+			PreparedStatement stmt = conn
+					.prepareStatement("INSERT INTO scm(meter, readtime, kwhreading) VALUES (?, ?, ?)");
 			stmt.setString(1, this.getSerial());
-			stmt.setTimestamp(2, new java.sql.Timestamp(cal.getTime().getTime()));
+			stmt.setTimestamp(2,
+					new java.sql.Timestamp(cal.getTime().getTime()));
 			stmt.setString(3, this.getReading().toPlainString());
-			stmt.execute();	
-			
+			stmt.execute();
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
-			try { conn.close(); } catch (Exception e) {}
+			try {
+				conn.close();
+			} catch (Exception e) {
+			}
 		}
 	}
 }

@@ -6,8 +6,7 @@ public class ERTMessage implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 7698020190604590414L;
-	
-	
+
 	private java.util.Date date;
 	private String serial;
 	private java.math.BigDecimal reading;
