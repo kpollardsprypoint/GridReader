@@ -79,17 +79,12 @@ public class GridReader {
 			log("Event:");
 			if (event.isRXCHAR()) {// If data is available
 				Integer len = event.getEventValue();
-				// log("RX: " + len.toString());
-				// if(event.getEventValue() == 10){//Check bytes count in the
-				// input buffer
-				// Read data, if 10 bytes available
 				try {
 					byte buffer[] = serialPort.readBytes(len);
 					doWork(new String(buffer));
 				} catch (SerialPortException ex) {
 					System.out.println(ex);
 				}
-				// }
 			} else if (event.isCTS()) {// If CTS line has changed state
 				log("CTS");
 				if (event.getEventValue() == 1) {// If line is ON
@@ -108,17 +103,11 @@ public class GridReader {
 	}
 
 	private static void doWork(String line) {
-		// System.out.println("Work with: " + line);
-
-		// for (int i=0; i<line.length();i++)
-		// System.out.println(line.charAt(i) + " as ASCII value of " +
-		// (int)line.charAt(i));
 
 		java.util.regex.Matcher matcher = pattern.matcher(line);
 		if (matcher.matches()) {
 			String message = matcher.group(1);
 			String checksum = matcher.group(2);
-			// log("Match: " + message + " checksum: " + checksum);
 
 			if (valid(message, checksum)) {
 				String parts[] = message.split(",");
@@ -133,12 +122,10 @@ public class GridReader {
 					if (messageType.equals("UMIDM")) {
 						IntervalDataMessage idm = new IntervalDataMessage(parts);
 						idm.log();
-						// log(" IDM MESSAGE: " + line);
 					} else {
 						log("Unknown message type: " + line);
 					}
 				}
-				// Otherwise, ignore
 			} else {
 				log("Checksum failed on " + line);
 			}
@@ -165,7 +152,6 @@ public class GridReader {
 		}
 
 		String calcSumString = Integer.toHexString(calculatedChecksum);
-		// log("Calculated checksum: " + calcSumString);
 
 		if (calcSumString.equalsIgnoreCase(checksum)) {
 			return true;
