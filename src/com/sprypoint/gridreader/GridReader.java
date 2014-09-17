@@ -72,7 +72,7 @@ public class GridReader {
 			System.out.println(ex);
 		}
 	}
-
+	
 	static class SerialPortReader implements SerialPortEventListener {
 
 		public void serialEvent(SerialPortEvent event) {
